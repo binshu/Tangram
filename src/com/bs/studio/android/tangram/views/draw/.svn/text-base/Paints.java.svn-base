@@ -1,0 +1,45 @@
+/**
+ * 
+ */
+package com.bs.studio.android.tangram.views.draw;
+
+import com.bs.studio.android.tangram.model.PieceId;
+import com.bs.studio.android.tangram.views.PieceGroup;
+
+import android.graphics.Color;
+import android.graphics.Paint;
+
+/**
+ * @author LemIST
+ * 
+ */
+public class Paints {
+
+	private static Paint[] userControlledPiecePaints;
+	private static int[] userControlledPieceColors = new int[] { Color.RED,
+			Color.GREEN, Color.BLUE, Color.GREEN, Color.MAGENTA, Color.YELLOW,
+			Color.CYAN };
+	private static Paint tangramPaint;
+
+	public static Paint getPaint(PieceId id, PieceGroup group) {
+		if (group.isUserControlled()) {
+			if (userControlledPiecePaints == null) {
+				userControlledPiecePaints = new Paint[PieceId.values().length];
+			}
+
+			if (userControlledPiecePaints[id.getValue()] == null) {
+				userControlledPiecePaints[id.getValue()] = new Paint();
+				userControlledPiecePaints[id.getValue()]
+						.setColor(userControlledPieceColors[id.getValue()]);
+			}
+
+			return userControlledPiecePaints[id.getValue()];
+		}else{
+			if (tangramPaint == null){
+				tangramPaint = new Paint();
+				tangramPaint.setColor(Color.WHITE);
+			}
+			return tangramPaint;
+		}
+	}
+}

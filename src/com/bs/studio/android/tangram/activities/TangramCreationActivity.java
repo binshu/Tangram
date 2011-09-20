@@ -1,0 +1,90 @@
+/**
+ * 
+ */
+package com.bs.studio.android.tangram.activities;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.Window;
+
+import com.bs.studio.android.math.Point;
+import com.bs.studio.android.tangram.R;
+import com.bs.studio.android.tangram.model.Tangram;
+import com.bs.studio.android.tangram.views.CreateTanView;
+import com.bs.studio.android.tangram.views.PieceGroup;
+
+/**
+ * @author LemIST
+ * 
+ */
+public class TangramCreationActivity extends Activity {
+
+	private CreateTanView mainView = null;
+	private Point screenSize = null;
+	private TangramManager tangramManager = null;
+	
+	// menu item ids
+	private final int CreateNewTangramItem = 1;
+	private final int SaveTangramItem = 2;
+	private final int LoadTangramItem = 3;
+	private final int HelpItem = 4;
+
+	// created tangram
+	private Tangram createdTangram = null;
+
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.setContentView(R.layout.tancreation);
+
+		mainView = (CreateTanView) findViewById(R.id.createTanView1);
+		Display display = this.getWindowManager().getDefaultDisplay();
+		screenSize = new Point(display.getWidth(), display.getHeight());
+		mainView.initialize(screenSize);
+		
+		tangramManager = TangramManager.createTamgramManager(this);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+
+		menu.add(0, CreateNewTangramItem, 0, "Create New Tangram");
+		menu.add(0, SaveTangramItem, 1, "Save Tangram");
+		menu.add(0, LoadTangramItem, 2, "Load Tangram");
+		menu.add(0, HelpItem, 3, "Help");
+
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case CreateNewTangramItem:
+			mainView.resetPiecesPosition();
+			break;
+		case SaveTangramItem:
+			createdTangram = Tangram
+					.createTangram(mainView.getPiecesByGroup(PieceGroup.UserControlled_0));
+			if (createdTangram != null){
+				tangramManager.saveAndPersistTangram(createdTangram);
+			}
+			break;
+		case LoadTangramItem:
+			if (createdTangram != null){
+				createdTangram.restorePieces(
+						mainView.getPiecesByGroup(PieceGroup.UserControlled_0), screenSize);
+				mainView.invalidate(); 
+			}
+			break;
+		case HelpItem:
+			break;
+		}
+		return true;
+	}
+}

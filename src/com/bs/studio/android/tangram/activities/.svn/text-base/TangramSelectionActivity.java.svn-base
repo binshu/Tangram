@@ -1,0 +1,43 @@
+/**
+ * 
+ */
+package com.bs.studio.android.tangram.activities;
+
+import com.bs.studio.android.math.Point;
+import com.bs.studio.android.tangram.R;
+import com.bs.studio.android.tangram.R.id;
+import com.bs.studio.android.tangram.R.layout;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Display;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.LinearLayout;
+
+/**
+ * @author LemIST
+ *
+ */
+public class TangramSelectionActivity extends Activity {
+	private TangramManager tangramManager = null;
+	
+	private ViewGroup container; 
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.setContentView(R.layout.tancreation);
+		
+		container = (ViewGroup)findViewById(R.id.tangramSelectionsContatiner);
+		tangramManager = TangramManager.createTamgramManager(this);
+		
+		createSelectionsView();
+	}
+	
+	public void createSelectionsView(){
+		
+	}
+	
+}
